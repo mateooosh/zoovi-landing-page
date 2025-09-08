@@ -1,0 +1,67 @@
+@import "tailwindcss";
+@import "tailwindcss-primeui";
+
+:root {
+  /*color: black;*/
+  /*background-color: white;*/
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-sans);
+  color: var(--color-black);
+
+  --spacing: 1px;
+  --color-black: #20303C;
+  --color-default: #20303C;
+  --color-neutral-heavy: #4D5963;
+  --color-neutral: #6E7881;
+  --color-neutral-light: #A6ACB1;
+  --color-disabled: #D2D6D8;
+
+  --text-xs--line-height: 1;
+}
+
+.p-button {
+  --p-button-border-radius: 12px;
+}
+
+body {
+  margin: 0;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* Headings */
+.heading1   { font-size: 32px; font-weight: 400; }
+.heading1B  { font-size: 32px; font-weight: 500; }
+.heading2   { font-size: 24px; font-weight: 400; }
+.heading2B  { font-size: 24px; font-weight: 500; }
+.heading3   { font-size: 20px; font-weight: 400; }
+.heading3B  { font-size: 20px; font-weight: 500; }
+
+/* Body */
+.bodyLarge  { font-size: 18px; font-weight: 400; }
+.bodyLargeB { font-size: 18px; font-weight: 500; }
+.body       { font-size: 16px; font-weight: 400; }
+.bodyB      { font-size: 16px; font-weight: 500; }
+.bodySmall  { font-size: 14px; font-weight: 400; }
+.bodySmallB { font-size: 14px; font-weight: 500; }
+
+/* Caption */
+.caption    { font-size: 12px; font-weight: 400; }
+.captionB   { font-size: 12px; font-weight: 500; }
+
+/* Text */
+.text-default { color: var(--color-black)}
+.text-neutral-heavy { color: var(--color-neutral-heavy)}
+.text-neutral { color: var(--color-neutral)}
+.text-neutral-light { color: var(--color-neutral-light)}
+.text-disabled { color: var(--color-disabled)}
+.text-primary { color: var(--p-primary-color)}
+
+/* Pill */
+.pill-green { background-color: #EAF8F1; color: var(--p-green-600) }
+.pill-red { background-color: #FDEFEF; color: #FF6262 }
