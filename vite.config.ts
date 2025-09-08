@@ -14,5 +14,8 @@ export default defineConfig({
                 PrimeVueResolver()
             ]
         })
-    ]
+    ],
+    base: process.env.NODE_ENV === 'production'
+        ? '/zoovi-landing-page/'
+        : '/'
 })
