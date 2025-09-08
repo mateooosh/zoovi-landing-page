@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import CSSVars from '../../models/CSSVars'
 
-const values = [
-  {
-    color: CSSVars.getVar('--p-primary-color'),
-    value: 50
-  }
-]
+// const values = [
+//   {
+//     color: CSSVars.getVar('--p-primary-color'),
+//     value: 50
+//   }
+// ]
 
 const cases = [
     { label: 'Szczepienie', value: 50, color: CSSVars.getVar('--p-primary-color') },

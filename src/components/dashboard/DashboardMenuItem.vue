@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const { icon, label, isSelected } = defineProps<{
-  icon: string
+const { label, isSelected } = defineProps<{
+  // icon: string
   label: string
   isSelected?: boolean
 }>()
