@@ -8,15 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    Avatar: typeof import('primevue/avatar')['default']
-    Button: typeof import('primevue/button')['default']
-    Checkbox: typeof import('primevue/checkbox')['default']
-    Column: typeof import('primevue/column')['default']
-    DataTable: typeof import('primevue/datatable')['default']
-    InputText: typeof import('primevue/inputtext')['default']
     LandingCard: typeof import('./src/components/landing-card/LandingCard.vue')['default']
-    MeterGroup: typeof import('primevue/metergroup')['default']
-    Password: typeof import('primevue/password')['default']
     Pill: typeof import('./src/components/Pill/Pill.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
