@@ -2,8 +2,6 @@
   <div class="corgi-wrap">
     <svg
         ref="corgi-svg"
-        width="670"
-        height="585"
         viewBox="0 0 670 585"
         xmlns="http://www.w3.org/2000/svg"
     >
@@ -85,22 +83,24 @@ const rightEyeball = useTemplateRef('eyeball-right')
 let pendingEvt = null
 let rafId = 0
 
-function moveEyeball(el, eyeCenter, rect, mouseX, mouseY) {
-  if (!el) return
-  const svgMouseX = mouseX - rect.left
-  const svgMouseY = mouseY - rect.top
+function getSVGPointFromClientCoordinates(clientX, clientY) {
+  const svg = svgRef.value
+  if (!svg) return null
+  const ctm = svg.getScreenCTM()
+  if (!ctm) return null
+  const inv = ctm.inverse()
+  const pt = new DOMPoint(clientX, clientY).matrixTransform(inv)
+  return { x: pt.x, y: pt.y }
+}
 
-  const dx = svgMouseX - eyeCenter.x
-  const dy = svgMouseY - eyeCenter.y
-
+function moveEyeball(eyeballElement, eyeCenter, svgCoordinatesPoint) {
+  if (!eyeballElement || !svgCoordinatesPoint) return
+  const dx = svgCoordinatesPoint.x - eyeCenter.x
+  const dy = svgCoordinatesPoint.y - eyeCenter.y
   const distance = Math.hypot(dx, dy)
   const angle = Math.atan2(dy, dx)
-
-  const moveDistance = Math.min(distance, maxRadius)
-  const offsetX = Math.cos(angle) * moveDistance
-  const offsetY = Math.sin(angle) * moveDistance
-
-  el.setAttribute('transform', `translate(${offsetX}, ${offsetY})`)
+  const move = Math.min(distance, maxRadius)
+  eyeballElement.setAttribute('transform', `translate(${Math.cos(angle)*move}, ${Math.sin(angle)*move})`)
 }
 
 function onPointerMove(evt) {
@@ -109,18 +109,13 @@ function onPointerMove(evt) {
 }
 
 function flush() {
-  if (!pendingEvt || !svgRef.value) {
-    rafId = 0
-    return
-  }
-
-  const {clientX, clientY} = pendingEvt
+  if (!pendingEvt) { rafId = 0; return }
+  const { clientX, clientY } = pendingEvt
   pendingEvt = null
 
-  const rect = svgRef.value.getBoundingClientRect()
-
-  moveEyeball(leftEyeball.value, leftEyeCenter, rect, clientX, clientY)
-  moveEyeball(rightEyeball.value, rightEyeCenter, rect, clientX, clientY)
+  const p = getSVGPointFromClientCoordinates(clientX, clientY)
+  moveEyeball(leftEyeball.value, leftEyeCenter, p)
+  moveEyeball(rightEyeball.value, rightEyeCenter, p)
 
   rafId = 0
 }
@@ -145,7 +140,8 @@ onBeforeUnmount(() => {
 }
 
 svg {
-  max-width: 80%;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 </style>
