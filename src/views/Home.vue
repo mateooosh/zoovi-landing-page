@@ -8,12 +8,22 @@ import rating from '../assets/gifs/rating.gif'
 import _24h from '../assets/gifs/24h.gif'
 import message from '../assets/gifs/message.gif'
 import Corgi from "../components/corgi/Corgi.vue";
+import AnimatedText from "../components/animated-text/AnimatedText.vue";
 </script>
 
 <template>
   <div>
     <div class="flex justify-center">
-      <corgi/>
+      <AnimatedText  text="Cześć" color="#009872"/>
+    </div>
+
+
+    <div class="flex justify-center text-2xl">
+      <p>Tworzymy wspólnie aplikację, która ma ułatwić opiekę nad zwierzętami, oferując intuicyjną platformę do szybkiego rezerwowania usług weterynaryjnych, pielęgnacyjnych i opieki nad zwierzętami — wszystko zaprojektowane dla wygody właścicieli i komfortu ich pupili.</p>
+    </div>
+
+    <div class="flex justify-center">
+      <Corgi/>
     </div>
 
     <div class="flex flex-col items-center">

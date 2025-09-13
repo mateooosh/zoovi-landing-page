@@ -8,7 +8,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AnimatedText: typeof import('./src/components/animated-text/AnimatedText.vue')['default']
     Corgi: typeof import('./src/components/corgi/Corgi.vue')['default']
+    HandwrittenText: typeof import('./src/components/handwritten-text/HandwrittenText.vue')['default']
     LandingCard: typeof import('./src/components/landing-card/LandingCard.vue')['default']
     Pill: typeof import('./src/components/Pill/Pill.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
