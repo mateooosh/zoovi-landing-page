@@ -10,17 +10,45 @@ import message from '../assets/gifs/message.gif'
 import beagle from '../assets/gifs/beagle.gif'
 import bone from '../assets/gifs/bone.gif'
 import dogFood from '../assets/gifs/dog-food.gif'
-import Corgi from "../components/corgi/Corgi.vue";
-import AnimatedText from "../components/animated-text/AnimatedText.vue";
-import { ref } from 'vue'
+import pawSvg from "../assets/paw.svg"
+import Corgi from "../components/corgi/Corgi.vue"
+import AnimatedText from "../components/animated-text/AnimatedText.vue"
+import { ref, useTemplateRef, onMounted, computed, onBeforeUnmount, nextTick } from 'vue'
 
 const step = ref(0)
+const footPrintsWidth = ref(0)
+const beagleRef = useTemplateRef('beagleRef')
+const gridContainerRef = useTemplateRef('gridContainerRef')
+
+function updateWidth() {
+  nextTick(() => {
+    footPrintsWidth.value =  beagleRef?.value.getBoundingClientRect().left - gridContainerRef?.value.getBoundingClientRect().left
+  })
+}
+
+onMounted(() => {
+  window.addEventListener('resize', updateWidth)
+  updateWidth()
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateWidth)
+})
+
+const footPrintsAmount = computed(() => {
+  if (!gridContainerRef?.value || !beagleRef?.value || footPrintsWidth.value === 0) {
+    return 0
+  }
+
+  return Math.floor(footPrintsWidth.value / 17) + 1
+})
 
 const onPrevious = () => {
   if (step.value < 1) {
     return
   }
   step.value--
+  updateWidth()
 }
 
 const onNext = () => {
@@ -28,17 +56,17 @@ const onNext = () => {
     return
   }
   step.value++
+  updateWidth()
 }
 </script>
 
 <template>
   <div>
-    <div class="flex justify-center">
-      <AnimatedText  text="Cześć" color="#009872"/>
+    <div class="flex justify-center lg:pl-0 lg:pr-0 pl-24 pr-24">
+      <AnimatedText text="Cześć" color="#009872"/>
     </div>
 
-
-    <div class="flex justify-center text-2xl">
+    <div class="flex justify-center text-2xl pl-24 pr-24">
       <p>Tworzymy wspólnie aplikację, która ma ułatwić opiekę nad zwierzętami, oferując intuicyjną platformę do szybkiego rezerwowania usług weterynaryjnych, pielęgnacyjnych i opieki nad zwierzętami — wszystko zaprojektowane dla wygody właścicieli i komfortu ich pupili.</p>
     </div>
 
@@ -80,9 +108,15 @@ const onNext = () => {
 
       <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-100 mb-50">Chcemy poznać Twoje zdanie</div>
       <div class="flex flex-col gap-24 lg:w-978 w-full lg:pl-0 lg:pr-0 pl-24 pr-24 mb-50">
-        <div class="grid lg:gap-80 items-center grid-cols-6 mb-16">
+        <div ref="gridContainerRef" class="grid lg:gap-80 items-center grid-cols-6 mb-16 relative">
+          <FadeIn v-for="index in footPrintsAmount" :key="index" :delay="index / footPrintsAmount * 50">
+            <img
+                 class="absolute"
+                 :style="`left: ${17 * (index - 1)}px; bottom: ${index % 2 ? 4 : 16}px;`" :src="pawSvg">
+          </FadeIn>
+
           <div class="flex justify-center" :style="{ gridColumnStart: step + 1 }">
-            <img :src="beagle" class="sm:w-100 sm:h-100 w-60 h-60">
+            <img ref="beagleRef" :src="beagle" class="sm:w-100 sm:h-100 w-60 h-60">
           </div>
           <div v-if="step < 1" class="flex justify-center">
             <img :src="bone" class="sm:w-60 sm:h-60 w-36 h-36">

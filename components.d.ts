@@ -12,6 +12,7 @@ declare module 'vue' {
     Button: typeof import('primevue/button')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
     Corgi: typeof import('./src/components/corgi/Corgi.vue')['default']
+    FadeIn: typeof import('./src/components/animations/FadeIn.vue')['default']
     LandingCard: typeof import('./src/components/landing-card/LandingCard.vue')['default']
     Pill: typeof import('./src/components/Pill/Pill.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
