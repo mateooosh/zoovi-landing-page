@@ -65,3 +65,10 @@ body {
 /* Pill */
 .pill-green { background-color: #EAF8F1; color: var(--p-green-600) }
 .pill-red { background-color: #FDEFEF; color: #FF6262 }
+
+@font-face {
+  font-family: 'Segoe Script';
+  src: url('../src/assets/fonts/segoescript.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

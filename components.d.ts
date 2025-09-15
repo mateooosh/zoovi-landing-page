@@ -10,10 +10,12 @@ declare module 'vue' {
   export interface GlobalComponents {
     AnimatedText: typeof import('./src/components/animated-text/AnimatedText.vue')['default']
     Button: typeof import('primevue/button')['default']
+    Carousel: typeof import('primevue/carousel')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
     Corgi: typeof import('./src/components/corgi/Corgi.vue')['default']
     FadeIn: typeof import('./src/components/animations/FadeIn.vue')['default']
     LandingCard: typeof import('./src/components/landing-card/LandingCard.vue')['default']
+    LandingSurveyQuestion: typeof import('./src/components/landing-survey-question/LandingSurveyQuestion.vue')['default']
     Pill: typeof import('./src/components/Pill/Pill.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

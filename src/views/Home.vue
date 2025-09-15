@@ -11,12 +11,15 @@ import beagle from '../assets/gifs/beagle.gif'
 import bone from '../assets/gifs/bone.gif'
 import dogFood from '../assets/gifs/dog-food.gif'
 import pawSvg from "../assets/paw.svg"
+import zooviLogo from "../assets/zoovi-logo.svg"
+import arrow1 from "../assets/arrow-1.svg"
 import Corgi from "../components/corgi/Corgi.vue"
 import AnimatedText from "../components/animated-text/AnimatedText.vue"
 import { ref, useTemplateRef, onMounted, computed, onBeforeUnmount, nextTick } from 'vue'
 
 const step = ref(0)
 const footPrintsWidth = ref(0)
+const surveyResults = ref([])
 const beagleRef = useTemplateRef('beagleRef')
 const gridContainerRef = useTemplateRef('gridContainerRef')
 
@@ -52,22 +55,87 @@ const onPrevious = () => {
 }
 
 const onNext = () => {
-  if (step.value > 4) {
+  if (step.value > survey.length - 2) {
+    console.log('koniec', surveyResults.value)
     return
   }
   step.value++
   updateWidth()
 }
+
+const onAnswerChange = (value) => {
+  surveyResults.value[step.value] = value
+}
+
+const surveyPrimaryButtonIsDisabled = computed(() => {
+  if (surveyResults.value[step.value]) {
+    return !Object.values(surveyResults.value[step.value]).some(v => v === true)
+  }
+
+  return true
+})
+
+const surveyPrimaryButtonLabel = computed(() => {
+  if (step.value === survey.length - 1) {
+    return 'Zakończ'
+  }
+  return 'Dalej'
+})
+
+const survey = [
+  {
+    id: 0,
+    question: 'Czy landing page zachęcił Pana/Panią do skorzystania ze strony i aplikacji Zoovi?',
+    answers: ['Tak', 'Nie']
+  },
+  {
+    id: 1,
+    question: 'Czy explainer video zachęcił do skorzystania ze strony i aplikacji Zoovi?',
+    answers: ['Tak', 'Nie']
+  },
+  {
+    id: 2,
+    question: 'Czy chciałby/-aby Pan/-i wziąć udział w testach systemu?',
+    answers: ['Tak', 'Nie']
+  },
+  {
+    id: 3,
+    question: 'Czy główne cechy produkty zostały przedstawione w zrozumiałej formie?',
+    answers: ['Tak', 'Nie']
+  },
+  {
+    id: 4,
+    question: 'Czy landing page i explaner video są wystarczające do zapoznania się z naszym produktem?',
+    answers: ['Tak', 'Nie']
+  },
+  {
+    id: 5,
+    question: 'Czy wpółpraca Zoovi z partnerami (np. Główny Inspektorat Weterynarii, Krajowa Izba Lekarsko-Weterynaryjna, Schroniska) zachęciłby Pana/-i do korzystania ze strony i aplikacji?',
+    answers: ['Tak', 'Nie']
+  },
+  {
+    id: 6,
+    isLast: true,
+    question: 'Koniec',
+    answers: ['Tak', 'Nie']
+  }
+]
 </script>
 
 <template>
   <div>
-    <div class="flex justify-center lg:pl-0 lg:pr-0 pl-24 pr-24">
+    <div class="flex justify-center flex-col lg:flex-row gap-0 lg:gap-40 items-center lg:pl-0 lg:pr-0 pl-24 pr-24 mb-50 mt-50">
       <AnimatedText text="Cześć" color="#009872"/>
+      <div class="relative lg:block flex items-end gap-12">
+        <img :src="zooviLogo">
+        <img :src="arrow1" class="lg:absolute lg:mb-0 mb-30" style="right: -120px; bottom: 30px; width: 100px;">
+        <span class="lg:absolute text-neutral-light"
+              style="right: -260px; bottom: -20px; font-family: 'Segoe Script', sans-serif; font-size: 30px;">Nasze logo</span>
+      </div>
     </div>
 
-    <div class="flex justify-center text-2xl pl-24 pr-24">
-      <p>Tworzymy wspólnie aplikację, która ma ułatwić opiekę nad zwierzętami, oferując intuicyjną platformę do szybkiego rezerwowania usług weterynaryjnych, pielęgnacyjnych i opieki nad zwierzętami — wszystko zaprojektowane dla wygody właścicieli i komfortu ich pupili.</p>
+    <div class="flex justify-center text-2xl pl-24 pr-24 mb-100">
+      <p class="w-1000 text-center leading-40">Tworzymy wspólnie aplikację, która ma ułatwić opiekę nad zwierzętami, oferując intuicyjną platformę do szybkiego rezerwowania usług weterynaryjnych, pielęgnacyjnych i opieki nad zwierzętami — wszystko zaprojektowane dla wygody właścicieli i komfortu ich pupili.</p>
     </div>
 
     <div class="flex justify-center">
@@ -108,7 +176,7 @@ const onNext = () => {
 
       <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-100 mb-50">Chcemy poznać Twoje zdanie</div>
       <div class="flex flex-col gap-24 lg:w-978 w-full lg:pl-0 lg:pr-0 pl-24 pr-24 mb-50">
-        <div ref="gridContainerRef" class="grid lg:gap-80 items-center grid-cols-6 mb-16 relative">
+        <div ref="gridContainerRef" class="grid items-center grid-cols-7 mb-16 relative">
           <FadeIn v-for="index in footPrintsAmount" :key="index" :delay="index / footPrintsAmount * 50">
             <img
                  class="absolute"
@@ -131,31 +199,22 @@ const onNext = () => {
             <img :src="bone" class="sm:w-60 sm:h-60 w-36 h-36">
           </div>
           <div v-if="step < 5" class="flex justify-center">
+            <img :src="bone" class="sm:w-60 sm:h-60 w-36 h-36">
+          </div>
+          <div v-if="step < 6" class="flex justify-center">
             <img :src="dogFood" class="sm:w-100 sm:h-100 w-60 h-60">
           </div>
         </div>
 
-        <div class="heading2B">Jak często chodzisz do weterynarza?</div>
-        <div class="body flex gap-16 items-center">
-          <Checkbox binary input-id="label1"/>
-          <label for="label1">Raz w tygodniu</label>
-        </div>
-        <div class="body flex gap-16 items-center">
-          <Checkbox binary input-id="label2"/>
-          <label for="label2" class="body">Raz w miesiącu</label>
-        </div>
-        <div class="body flex gap-16 items-center">
-          <Checkbox binary input-id="label3"/>
-          <label for="label3" class="body">Raz w roku</label>
-        </div>
-        <div class="body flex gap-16 items-center">
-          <Checkbox binary input-id="label4"/>
-          <label for="label4" class="body">Rzadziej</label>
-        </div>
+        <Carousel :page="step" :value="survey" :numVisible="1" :numScroll="1" :show-navigators="false" :show-indicators="false">
+          <template #item="{ data }">
+            <LandingSurveyQuestion :item="data" :step="step" @value-change="onAnswerChange"/>
+          </template>
+        </Carousel>
 
-        <div class="flex justify-between gap-16">
-          <Button @click="onPrevious" class="h-40 w-200" variant="outlined">Wstecz</Button>
-          <Button @click="onNext" class="h-40 w-200">Dalej</Button>
+        <div v-if="step < 6" class="flex justify-between gap-16">
+          <Button @click="onPrevious" :disabled="step < 1" class="h-40 w-200" variant="outlined">Wstecz</Button>
+          <Button @click="onNext" :disabled="surveyPrimaryButtonIsDisabled" class="h-40 w-200">{{ surveyPrimaryButtonLabel }}</Button>
         </div>
       </div>
     </div>

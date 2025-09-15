@@ -1,6 +1,6 @@
 <template>
   <div class="handwritten-container">
-    <svg ref="svg" width="100%" height="100" viewBox="0 0 800 100"></svg>
+    <svg ref="svg" width="100%" viewBox="0 0 160 100"></svg>
   </div>
 </template>
 
@@ -44,7 +44,7 @@ export default {
         font = opentype.parse(arrayBuffer);
       }
 
-      let xOffset = 0;
+      let xOffset = 2;
       const glyphPaths = font.getPaths(this.text, 0, 60, 72); // Returns array of Path objects, one per glyph
 
       const svg = this.$refs.svg;
