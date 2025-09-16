@@ -13,6 +13,7 @@ import dogFood from '../assets/gifs/dog-food.gif'
 import pawSvg from "../assets/paw.svg"
 import zooviLogo from "../assets/zoovi-logo.svg"
 import arrow1 from "../assets/arrow-1.svg"
+import arrow2 from "../assets/arrow-2.svg"
 import Corgi from "../components/corgi/Corgi.vue"
 import AnimatedText from "../components/animated-text/AnimatedText.vue"
 import { ref, useTemplateRef, onMounted, computed, onBeforeUnmount, nextTick } from 'vue'
@@ -76,7 +77,7 @@ const surveyPrimaryButtonIsDisabled = computed(() => {
 })
 
 const surveyPrimaryButtonLabel = computed(() => {
-  if (step.value === survey.length - 1) {
+  if (step.value >= survey.length - 2) {
     return 'Zakończ'
   }
   return 'Dalej'
@@ -124,18 +125,29 @@ const survey = [
 
 <template>
   <div>
-    <div class="flex justify-center flex-col lg:flex-row gap-0 lg:gap-40 items-center lg:pl-0 lg:pr-0 pl-24 pr-24 mb-50 mt-50">
+    <div class="flex justify-center flex-col lg:flex-row gap-0 lg:gap-40 items-center lg:pl-0 lg:pr-0 pl-24 pr-24 mt-50">
       <AnimatedText text="Cześć" color="#009872"/>
       <div class="relative lg:block flex items-end gap-12">
         <img :src="zooviLogo">
-        <img :src="arrow1" class="lg:absolute lg:mb-0 mb-30" style="right: -120px; bottom: 30px; width: 100px;">
+        <img :src="arrow1" class="lg:absolute lg:mb-0 mb-30 w-100" style="right: -120px; bottom: 30px;">
         <span class="lg:absolute text-neutral-light"
               style="right: -260px; bottom: -20px; font-family: 'Segoe Script', sans-serif; font-size: 30px;">Nasze logo</span>
       </div>
     </div>
+    <div class="flex justify-center lg:pl-0 lg:pr-0 pl-24 pr-24 mb-100 lg:mt-0 mt-50">
+      <AnimatedText class="h-120" text="Jesteśmy Zoovi" color="#009872" :view-box-width="400"/>
+    </div>
 
-    <div class="flex justify-center text-2xl pl-24 pr-24 mb-100">
-      <p class="w-1000 text-center leading-40">Tworzymy wspólnie aplikację, która ma ułatwić opiekę nad zwierzętami, oferując intuicyjną platformę do szybkiego rezerwowania usług weterynaryjnych, pielęgnacyjnych i opieki nad zwierzętami — wszystko zaprojektowane dla wygody właścicieli i komfortu ich pupili.</p>
+    <div class="flex flex-col items-center justify-center text-2xl pl-24 pr-24 mb-200">
+      <p class="w-full lg:w-860 text-center leading-40 relative">
+        Tworzymy wspólnie aplikację, która ma ułatwić opiekę nad zwierzętami, oferując intuicyjną platformę do szybkiego rezerwowania usług weterynaryjnych, pielęgnacyjnych i opieki nad zwierzętami — wszystko zaprojektowane dla wygody właścicieli i komfortu ich pupili.
+        <div class="flex justify-end items-end gap-20 absolute right-[20px] bottom-[-110px]">
+          <div class="flex">
+            <div class="text-neutral-light" style="font-family: 'Segoe Script', sans-serif; font-size: 30px;">Nasz cel</div>
+          </div>
+          <img :src="arrow2" class="w-80 pb-20">
+        </div>
+      </p>
     </div>
 
     <div class="flex justify-center">

@@ -1,6 +1,6 @@
 <template>
   <div class="handwritten-container">
-    <svg ref="svg" width="100%" viewBox="0 0 160 100"></svg>
+    <svg ref="svg" width="100%" height="100%" :viewBox="`0 0 ${viewBoxWidth} 100`"></svg>
   </div>
 </template>
 
@@ -29,6 +29,10 @@ export default {
     color: {
       type: String,
       default: 'black' // Color for the fill
+    },
+    viewBoxWidth: {
+      type: Number,
+      default: 160
     },
   },
   async mounted() {
