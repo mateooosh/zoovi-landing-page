@@ -6,8 +6,21 @@ import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
 import { definePreset } from '@primeuix/themes'
+import AnimateOnScroll from 'primevue/animateonscroll'
 
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement, ArcElement } from 'chart.js'
+import {
+    ArcElement,
+    BarElement,
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    LineElement,
+    PointElement,
+    Title,
+    Tooltip
+} from 'chart.js'
+
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement, ArcElement)
 
 const MyPreset = definePreset(Aura, {
@@ -59,5 +72,6 @@ app.use(PrimeVue, {
 })
 app.use(router)
 app.use(pinia)
+app.directive('animateonscroll', AnimateOnScroll)
 
 app.mount('#app')

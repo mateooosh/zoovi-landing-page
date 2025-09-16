@@ -21,4 +21,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SlideInDown: typeof import('./src/components/animations/SlideInDown.vue')['default']
   }
+  export interface GlobalDirectives {
+    AnimateOnScroll: typeof import('primevue/animateonscroll')['default']
+  }
 }

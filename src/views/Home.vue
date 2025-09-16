@@ -128,27 +128,40 @@ const survey = [
     <div class="flex justify-center flex-col lg:flex-row gap-0 lg:gap-40 items-center lg:pl-0 lg:pr-0 pl-24 pr-24 mt-50">
       <AnimatedText text="Cześć" color="#009872"/>
       <div class="relative lg:block flex items-end gap-12">
-        <img :src="zooviLogo">
-        <img :src="arrow1" class="lg:absolute lg:mb-0 mb-30 w-100" style="right: -120px; bottom: 30px;">
-        <span class="lg:absolute text-neutral-light"
-              style="right: -260px; bottom: -20px; font-family: 'Segoe Script', sans-serif; font-size: 30px;">Nasze logo</span>
+        <SlideInDown>
+          <img :src="zooviLogo">
+        </SlideInDown>
+        <SlideInDown :delay="100">
+          <img :src="arrow1" class="lg:absolute lg:mb-0 mb-30 w-100" style="right: -120px; bottom: 30px;">
+        </SlideInDown>
+
+        <SlideInDown :delay="200">
+          <span class="lg:absolute text-neutral-light"
+                style="right: -260px; bottom: -20px; font-family: 'Segoe Script', sans-serif; font-size: 30px;">Nasze logo</span>
+        </SlideInDown>
       </div>
     </div>
     <div class="flex justify-center lg:pl-0 lg:pr-0 pl-24 pr-24 mb-100 lg:mt-0 mt-50">
       <AnimatedText class="h-120" text="Jesteśmy Zoovi" color="#009872" :view-box-width="400"/>
     </div>
 
-    <div class="flex flex-col items-center justify-center text-2xl pl-24 pr-24 mb-200">
-      <p class="w-full lg:w-860 text-center leading-40 relative">
-        Tworzymy wspólnie aplikację, która ma ułatwić opiekę nad zwierzętami, oferując intuicyjną platformę do szybkiego rezerwowania usług weterynaryjnych, pielęgnacyjnych i opieki nad zwierzętami — wszystko zaprojektowane dla wygody właścicieli i komfortu ich pupili.
-        <div class="flex justify-end items-end gap-20 absolute right-[20px] bottom-[-110px]">
-          <div class="flex">
-            <div class="text-neutral-light" style="font-family: 'Segoe Script', sans-serif; font-size: 30px;">Nasz cel</div>
+    <SlideInDown :delay="300">
+      <div class="flex flex-col items-center justify-center pl-24 pr-24 mb-200">
+        <div class="w-full lg:w-860 text-center leading-40 relative text-2xl">
+          Tworzymy wspólnie aplikację, która ma ułatwić opiekę nad zwierzętami, oferując intuicyjną platformę do szybkiego rezerwowania usług weterynaryjnych, pielęgnacyjnych i opieki nad zwierzętami — wszystko zaprojektowane dla wygody właścicieli i komfortu ich pupili.
+          <div class="flex justify-end items-end gap-20 absolute right-[20px] bottom-[-110px]">
+            <SlideInDown :delay="500">
+              <div class="flex">
+                <div class="text-neutral-light" style="font-family: 'Segoe Script', sans-serif; font-size: 30px;">Nasz cel</div>
+              </div>
+            </SlideInDown>
+            <SlideInDown :delay="400">
+              <img :src="arrow2" class="w-80 pb-20">
+            </SlideInDown>
           </div>
-          <img :src="arrow2" class="w-80 pb-20">
         </div>
-      </p>
-    </div>
+      </div>
+    </SlideInDown>
 
     <div class="flex justify-center">
       <Corgi/>
@@ -157,37 +170,45 @@ const survey = [
     <div class="flex flex-col items-center">
       <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-50 mb-50">Dlaczego warto?</div>
       <div class="grid gap-24 sm:gap-60 2xl:gap-140 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
-        <LandingCard :src="calendar"
+        <LandingCard v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }"
+                     :src="calendar"
                      title="Wygodna rezerwacja"
                      caption="Rezerwuj, zmień termin wizyty lub odwołaj w razie potrzeby - wszystko wykonasz wygodnie w aplikacji"/>
-        <LandingCard :src="report"
+        <LandingCard v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }"
+                     :src="report"
                      title="Historia leczenia"
                      caption="Wszystkie dane medyczne Twojego pupila w jednym miejscu"/>
-        <LandingCard :src="payment"
+        <LandingCard v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }"
+                     :src="payment"
                      title="Płatności online"
                      caption="Za wizytę zapłacisz szybko, bezpiecznie i wygodnie"/>
-        <LandingCard :src="notification"
+        <LandingCard v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }"
+                     :src="notification"
                      title="Przypomnienia"
                      caption="Nie przegapisz już żadnej wizyty ani szczepienia - aplikacja przypomni Ci o wszystkich ważnych sprawach związanych z pupilem"/>
       </div>
 
       <div class="grid gap-24 sm:gap-60 2xl:gap-140 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 mt-50">
-        <LandingCard :src="prescription"
+        <LandingCard v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }"
+                     :src="prescription"
                      title="E-recepty"
                      caption="Otrzymuj recepty bez wychodzenia z domu - kilka kliknięć, a leki możesz odebrać w wybranej aptece"/>
-        <LandingCard :src="rating"
+        <LandingCard v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }"
+                     :src="rating"
                      title="System ocen"
                      caption="Sprawdź opinie o weterynarzu i oceń swoje wizyty - łatwiej wybierzesz najlepszego specjalistę dla swojego pupila"/>
-        <LandingCard :src="_24h"
+        <LandingCard v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }"
+                     :src="_24h"
                      title="Dyżury nocne"
                      caption="W nagłej sytuacji aplikacja pomoże Ci znaleźć pomoc, nawet w godzinach nocnych"/>
-        <LandingCard :src="message"
+        <LandingCard v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }"
+                     :src="message"
                      title="Kontakt z lekarzem"
                      caption="W razie potrzeby po wizycie możesz zadać dodatkowe pytania lekarzowi"/>
       </div>
 
       <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-100 mb-50">Chcemy poznać Twoje zdanie</div>
-      <div class="flex flex-col gap-24 lg:w-978 w-full lg:pl-0 lg:pr-0 pl-24 pr-24 mb-50">
+      <div class="flex flex-col gap-24 lg:w-978 w-full lg:pl-0 lg:pr-0 pl-24 pr-24 mb-100">
         <div ref="gridContainerRef" class="grid items-center grid-cols-7 mb-16 relative">
           <FadeIn v-for="index in footPrintsAmount" :key="index" :delay="index / footPrintsAmount * 50">
             <img
@@ -195,25 +216,25 @@ const survey = [
                  :style="`left: ${17 * (index - 1)}px; bottom: ${index % 2 ? 4 : 16}px;`" :src="pawSvg">
           </FadeIn>
 
-          <div class="flex justify-center" :style="{ gridColumnStart: step + 1 }">
+          <div class="flex justify-center" :style="{ gridColumnStart: step + 1, minWidth: '60px' }">
             <img ref="beagleRef" :src="beagle" class="sm:w-100 sm:h-100 w-60 h-60">
           </div>
           <div v-if="step < 1" class="flex justify-center">
-            <img :src="bone" class="sm:w-60 sm:h-60 w-36 h-36">
+            <img :src="bone" class="sm:w-60 sm:h-60 w-32 h-32">
           </div>
           <div v-if="step < 2" class="flex justify-center">
-            <img :src="bone" class="sm:w-60 sm:h-60 w-36 h-36">
+            <img :src="bone" class="sm:w-60 sm:h-60 w-32 h-32">
           </div>
           <div v-if="step < 3" class="flex justify-center">
-            <img :src="bone" class="sm:w-60 sm:h-60 w-36 h-36">
+            <img :src="bone" class="sm:w-60 sm:h-60 w-32 h-32">
           </div>
           <div v-if="step < 4" class="flex justify-center">
-            <img :src="bone" class="sm:w-60 sm:h-60 w-36 h-36">
+            <img :src="bone" class="sm:w-60 sm:h-60 w-32 h-32">
           </div>
           <div v-if="step < 5" class="flex justify-center">
-            <img :src="bone" class="sm:w-60 sm:h-60 w-36 h-36">
+            <img :src="bone" class="sm:w-60 sm:h-60 w-32 h-32">
           </div>
-          <div v-if="step < 6" class="flex justify-center">
+          <div v-if="step < 6" class="flex justify-center" style="min-width: 60px;">
             <img :src="dogFood" class="sm:w-100 sm:h-100 w-60 h-60">
           </div>
         </div>
@@ -229,6 +250,10 @@ const survey = [
           <Button @click="onNext" :disabled="surveyPrimaryButtonIsDisabled" class="h-40 w-200">{{ surveyPrimaryButtonLabel }}</Button>
         </div>
       </div>
+    </div>
+
+    <div class="flex flex-col items-center justify-center h-50 bg-primary-600 font-medium" style="color: #e8e8e8;">
+      <span>Copyright © 2025, Zoovi | Icons by <a href="https://www.flaticon.com" target="_blank" rel="noopener noreferrer">Flaticon</a>.</span>
     </div>
   </div>
 </template>
