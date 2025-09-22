@@ -38,6 +38,16 @@ function updateWidth() {
 onMounted(async () => {
   window.addEventListener('resize', updateWidth)
   updateWidth()
+
+  const path = 'client/views-count'
+
+  try {
+    await update(databaseRef, {
+      [path]: increment(1)
+    })
+  } catch (error) {
+    console.error('Error incrementing:', error)
+  }
 })
 
 onBeforeUnmount(() => {
