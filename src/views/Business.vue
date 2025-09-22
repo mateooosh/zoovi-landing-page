@@ -17,6 +17,8 @@ import arrow2 from "../assets/arrow-2.svg"
 import Corgi from "../components/corgi/Corgi.vue"
 import AnimatedText from "../components/animated-text/AnimatedText.vue"
 import { ref, useTemplateRef, onMounted, computed, onBeforeUnmount, nextTick } from 'vue'
+import { databaseRef } from '../firebase/firebase.ts'
+import { update, increment } from "firebase/database"
 
 const step = ref(0)
 const footPrintsWidth = ref(0)
@@ -30,7 +32,7 @@ function updateWidth() {
   })
 }
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('resize', updateWidth)
   updateWidth()
 })
@@ -56,12 +58,28 @@ const onPrevious = () => {
 }
 
 const onNext = () => {
-  if (step.value > survey.length - 2) {
-    console.log('koniec', surveyResults.value)
-    return
-  }
   step.value++
   updateWidth()
+
+  if (step.value > survey.length - 2) {
+    const results = surveyResults.value.map((res) => Object.keys(res).find(key => res[key] === true))
+
+    results.forEach((answer, index) => {
+      incrementSurveyAnswer('business', index, answer)
+    })
+  }
+}
+
+const incrementSurveyAnswer = async (group, index, answer) => {
+  const path = `survey/${group}/${index}/${answer}`
+
+  try {
+    await update(databaseRef, {
+      [path]: increment(1)
+    })
+  } catch (error) {
+    console.error('Error incrementing:', error)
+  }
 }
 
 const onAnswerChange = (value) => {
@@ -224,8 +242,8 @@ const survey = [
         <div ref="gridContainerRef" class="grid items-center grid-cols-7 mb-16 relative">
           <FadeIn v-for="index in footPrintsAmount" :key="index" :delay="index / footPrintsAmount * 50">
             <img
-                 class="absolute"
-                 :style="`left: ${17 * (index - 1)}px; bottom: ${index % 2 ? 4 : 16}px;`" :src="pawSvg">
+                class="absolute"
+                :style="`left: ${17 * (index - 1)}px; bottom: ${index % 2 ? 4 : 16}px;`" :src="pawSvg">
           </FadeIn>
 
           <div class="flex justify-center" :style="{ gridColumnStart: step + 1, minWidth: '60px' }">
