@@ -123,11 +123,13 @@ function flush() {
 onMounted(() => {
   window.addEventListener('pointermove', onPointerMove, {passive: true})
   window.addEventListener('mousemove', onPointerMove, {passive: true})
+  window.addEventListener('scroll',onPointerMove, {passive: true})
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('pointermove', onPointerMove)
   window.removeEventListener('mousemove', onPointerMove)
+  window.removeEventListener('scroll', onPointerMove)
   if (rafId) cancelAnimationFrame(rafId)
 })
 </script>
