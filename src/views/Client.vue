@@ -92,7 +92,9 @@ const addEmail = async () => {
     sentEmail.value = true
     email.value = ''
 
-    logEvent(analytics, 'test_event')
+    logEvent(analytics, 'added_email', {
+      debug_mode: true
+    })
 
   } catch (error) {
     console.error('Error saving email:', error)
