@@ -319,23 +319,23 @@ const survey = [
     </div>
 
     <div class="flex items-center justify-center mt-50 mb-100" v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">
-      <div class="cta-final reveal surface max-w-[1200px] ">
-        <div style="display:grid; gap:10px; align-items:center">
+      <div class="cta-final reveal surface max-w-[1200px] min-h-[295px] w-full flex flex-row items-center justify-center">
+        <div v-if="sentEmail" class="lg:text-5xl text-4xl font-medium text-center">
+          Dziękujemy
+        </div>
+        <div v-else style="display:grid; gap:10px; align-items:center">
           <h2 class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 mb-15">Może chciałbyś sprawdzić jak to działa?</h2>
           <p class="mb-15" style="color:#E2F7F3; margin:0 0 8px; max-width: 70%">Bylibyśmy zaszczyceni, gdybyś miał ochotę wziąć udział w przyszłych testach naszego rozwiązania. Aby wziąc
             udział w zamkniętej becie naszej aplikacji zostaw swojego maila. <br/>Obiecujemy nie wysyłać spamu - dostaniesz
-            od nas jedynie zaproszeniedo testów, gdy aplikacja będzie gotowa.</p>
-          <div v-if="sentEmail" class="lg:text-5xl text-4xl font-medium text-center">
-            Dziękujemy
-          </div>
-          <div v-else class="flex flex-row gap-16">
+            od nas jedynie zaproszenie do testów, gdy aplikacja będzie gotowa.</p>
+
+          <div class="flex flex-row gap-16">
             <InputText v-model="email" type="email" placeholder="email" class="w-[100%]"></InputText>
             <Button @click="addEmail" class="h-40 w-200">Zapisz się</Button>
           </div>
         </div>
       </div>
     </div>
-
 
     <div class="flex flex-col items-center justify-center h-50 bg-primary-600 font-medium" style="color: #e8e8e8;">
       <span>Copyright © 2025, Zoovi | Icons by <a href="https://www.flaticon.com" target="_blank"
