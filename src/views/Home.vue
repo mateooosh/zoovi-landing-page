@@ -163,6 +163,18 @@ const survey = [
       </div>
     </SlideInDown>
 
+    <div class="flex flex-col items-center justify-center pl-24 pr-24 mb-100">
+      <iframe
+          width="800"
+          height="450"
+          src="https://www.youtube.com/embed/8nd5n5KVOUo"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+      </iframe>
+    </div>
+
     <div class="flex justify-center">
       <Corgi/>
     </div>
