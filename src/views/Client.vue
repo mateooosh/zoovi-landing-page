@@ -23,6 +23,8 @@ import { update, increment, push, ref as firebaseRef } from "firebase/database"
 const step = ref(0)
 const footPrintsWidth = ref(0)
 const surveyResults = ref([])
+const sentEmail = ref(false)
+const email = ref('')
 const beagleRef = useTemplateRef('beagleRef')
 const gridContainerRef = useTemplateRef('gridContainerRef')
 
@@ -82,12 +84,14 @@ const incrementSurveyAnswer = async (group, index, answer) => {
   }
 }
 
-const addEmail = async (email) => {
+const addEmail = async () => {
   try {
-    const emailsRef = firebaseRef(database, "emails")
-    await push(emailsRef, email);
+    const emailsRef = firebaseRef(database, 'emails/clients')
+    await push(emailsRef, email.value)
+    sentEmail.value = true
+    email.value = ''
   } catch (error) {
-    console.error("Error saving email:", error)
+    console.error('Error saving email:', error)
   }
 }
 
@@ -198,30 +202,13 @@ const survey = [
       </div>
     </SlideInDown>
 
-
-    <SlideInDown>
-      <div class="flex flex-col items-center bg-surface-100">
-        <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-50 mb-50"> A można tak bardziej obrazkowo? :)</div>
-        <div class="flex flex-col items-center justify-center pl-24 pr-24 mb-100 w-[100%] ytplayer">
-          <iframe
-              src="https://www.youtube.com/embed/8nd5n5KVOUo"
-              title="YouTube video player"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen>
-          </iframe>
-        </div>
-      </div>
-    </SlideInDown>
-
-
-
-    <div class="flex justify-center">
+    <div class="flex justify-center" v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">
       <Corgi/>
     </div>
 
     <div class="flex flex-col items-center">
-      <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-50 mb-50">Dlaczego warto?</div>
+      <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-50 mb-50"
+           v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">Dlaczego warto?</div>
       <div class="grid gap-24 sm:gap-60 2xl:gap-140 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
         <LandingCard v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }"
                      :src="calendar"
@@ -259,12 +246,28 @@ const survey = [
                      title="Kontakt z lekarzem"
                      caption="W razie potrzeby po wizycie możesz zadać dodatkowe pytania lekarzowi"/>
       </div>
+    </div>
 
+    <div class="flex flex-col items-center bg-surface-100 mt-100">
+      <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-50 mb-50"
+           v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">A można tak bardziej obrazkowo? :)</div>
+      <div class="flex flex-col items-center justify-center pl-24 pr-24 mb-100 w-[100%] ytplayer"
+           v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">
+        <iframe
+            src="https://www.youtube.com/embed/8nd5n5KVOUo"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+      </div>
+    </div>
 
-
-
-      <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-100 mb-50">Chcemy poznać Twoje zdanie</div>
-      <div class="flex flex-col gap-24 lg:w-978 w-full lg:pl-0 lg:pr-0 pl-24 pr-24 mb-100">
+    <div class="flex flex-col items-center">
+      <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-100 mb-50"
+           v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">Chcemy poznać Twoje zdanie</div>
+      <div class="flex flex-col gap-24 lg:w-978 w-full lg:pl-0 lg:pr-0 pl-24 pr-24 mb-100"
+           v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">
         <div ref="gridContainerRef" class="grid items-center grid-cols-7 mb-16 relative">
           <FadeIn v-for="index in footPrintsAmount" :key="index" :delay="index / footPrintsAmount * 50">
             <img
@@ -311,15 +314,18 @@ const survey = [
       </div>
     </div>
 
-    <div class="flex items-center justify-center mt-50 mb-100">
+    <div class="flex items-center justify-center mt-50 mb-100" v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">
       <div class="cta-final reveal surface max-w-[1200px] ">
         <div style="display:grid; gap:10px; align-items:center">
-          <h2 class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mb-15">Może chciałbyś sprawdzić jak to działa?</h2>
+          <h2 class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 mb-15">Może chciałbyś sprawdzić jak to działa?</h2>
           <p class="mb-15" style="color:#E2F7F3; margin:0 0 8px; max-width: 70%">Bylibyśmy zaszczyceni, gdybyś miał ochotę wziąć udział w przyszłych testach naszego rozwiązania. Aby wziąc
             udział w zamkniętej becie naszej aplikacji zostaw swojego maila. <br/>Obiecujemy nie wysyłać spamu - dostaniesz
             od nas jedynie zaproszeniedo testów, gdy aplikacja będzie gotowa.</p>
-          <div class="flex flex-row gap-16">
-            <InputText type="email" placeholder="email" class="w-[100%]"></InputText>
+          <div v-if="sentEmail" class="lg:text-5xl text-4xl font-medium text-center">
+            Dziękujemy
+          </div>
+          <div v-else class="flex flex-row gap-16">
+            <InputText v-model="email" type="email" placeholder="email" class="w-[100%]"></InputText>
             <Button @click="addEmail" class="h-40 w-200">Zapisz się</Button>
           </div>
         </div>
