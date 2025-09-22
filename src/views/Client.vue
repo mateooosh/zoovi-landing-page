@@ -16,9 +16,10 @@ import arrow1 from "../assets/arrow-1.svg"
 import arrow2 from "../assets/arrow-2.svg"
 import Corgi from "../components/corgi/Corgi.vue"
 import AnimatedText from "../components/animated-text/AnimatedText.vue"
-import {computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef} from 'vue'
-import {database, databaseRef} from '../firebase/firebase.ts'
-import { update, increment, push, ref as firebaseRef } from "firebase/database"
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
+import { database, databaseRef, analytics } from '../firebase/firebase.ts'
+import { update, increment, push, ref as firebaseRef } from 'firebase/database'
+import { logEvent } from 'firebase/analytics'
 
 const step = ref(0)
 const footPrintsWidth = ref(0)
@@ -90,6 +91,9 @@ const addEmail = async () => {
     await push(emailsRef, email.value)
     sentEmail.value = true
     email.value = ''
+
+    logEvent(analytics, 'test_event')
+
   } catch (error) {
     console.error('Error saving email:', error)
   }
