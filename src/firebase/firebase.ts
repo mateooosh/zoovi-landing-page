@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
-import { getAnalytics } from "firebase/analytics"
+import { getAnalytics, logEvent } from "firebase/analytics"
 import { getDatabase } from "firebase/database"
 import { ref as dbRef } from '@firebase/database'
 // TODO: Add SDKs for Firebase products that you want to use
@@ -24,5 +24,12 @@ const firebaseApp = initializeApp(firebaseConfig)
 const analytics = getAnalytics(firebaseApp)
 const database = getDatabase(firebaseApp)
 const databaseRef = dbRef(database)
+
+logEvent(analytics, "page_view", {
+    page_location: location.href,
+    page_title: document.title,
+    page_referrer: document.referrer || undefined,
+    debug_mode: true
+});
 
 export { firebaseApp, analytics, database, databaseRef }
