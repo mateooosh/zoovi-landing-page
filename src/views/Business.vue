@@ -16,25 +16,38 @@ import arrow1 from "../assets/arrow-1.svg"
 import arrow2 from "../assets/arrow-2.svg"
 import Corgi from "../components/corgi/Corgi.vue"
 import AnimatedText from "../components/animated-text/AnimatedText.vue"
-import { ref, useTemplateRef, onMounted, computed, onBeforeUnmount, nextTick } from 'vue'
-import { databaseRef } from '../firebase/firebase.ts'
-import { update, increment } from "firebase/database"
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
+import { database, databaseRef, analytics } from '../firebase/firebase.ts'
+import { update, increment, push, ref as firebaseRef } from 'firebase/database'
+import { logEvent } from 'firebase/analytics'
 
 const step = ref(0)
 const footPrintsWidth = ref(0)
 const surveyResults = ref([])
+const sentEmail = ref(false)
+const email = ref('')
 const beagleRef = useTemplateRef('beagleRef')
 const gridContainerRef = useTemplateRef('gridContainerRef')
 
 function updateWidth() {
   nextTick(() => {
-    footPrintsWidth.value =  beagleRef?.value.getBoundingClientRect().left - gridContainerRef?.value.getBoundingClientRect().left
+    footPrintsWidth.value = beagleRef?.value.getBoundingClientRect().left - gridContainerRef?.value.getBoundingClientRect().left
   })
 }
 
 onMounted(async () => {
   window.addEventListener('resize', updateWidth)
   updateWidth()
+
+  const path = 'views-count/business'
+
+  try {
+    await update(databaseRef, {
+      [path]: increment(1)
+    })
+  } catch (error) {
+    console.error('Error incrementing:', error)
+  }
 })
 
 onBeforeUnmount(() => {
@@ -79,6 +92,20 @@ const incrementSurveyAnswer = async (group, index, answer) => {
     })
   } catch (error) {
     console.error('Error incrementing:', error)
+  }
+}
+
+const addEmail = async () => {
+  try {
+    const emailsRef = firebaseRef(database, 'emails/business')
+    await push(emailsRef, email.value)
+    sentEmail.value = true
+    email.value = ''
+
+    logEvent(analytics, 'email_business')
+
+  } catch (error) {
+    console.error('Error saving email:', error)
   }
 }
 
@@ -139,11 +166,14 @@ const survey = [
     answers: ['Tak', 'Nie']
   }
 ]
+
+
 </script>
 
 <template>
   <div>
-    <div class="flex justify-center flex-col lg:flex-row gap-0 lg:gap-40 items-center lg:pl-0 lg:pr-0 pl-24 pr-24 mt-50">
+    <div
+        class="flex justify-center flex-col lg:flex-row gap-0 lg:gap-40 items-center lg:pl-0 lg:pr-0 pl-24 pr-24  mt-50">
       <AnimatedText text="Cześć" color="#009872"/>
       <div class="relative lg:block flex items-end gap-12">
         <SlideInDown>
@@ -159,18 +189,23 @@ const survey = [
         </SlideInDown>
       </div>
     </div>
-    <div class="flex justify-center lg:pl-0 lg:pr-0 pl-24 pr-24 mb-100 lg:mt-0 mt-50">
-      <AnimatedText class="h-120" text="Jesteśmy Zoovi" color="#009872" :view-box-width="400"/>
+
+    <div class="flex justify-center mb-50">
+      <h2 class="handwritten subtitle font-extrabold text-primary pa-0">Jesteśmy Zoovi</h2>
     </div>
 
     <SlideInDown :delay="300">
       <div class="flex flex-col items-center justify-center pl-24 pr-24 mb-200">
         <div class="w-full lg:w-860 text-center leading-40 relative text-2xl">
-          Tworzymy wspólnie aplikację, która ma ułatwić opiekę nad zwierzętami, oferując intuicyjną platformę do szybkiego rezerwowania usług weterynaryjnych, pielęgnacyjnych i opieki nad zwierzętami — wszystko zaprojektowane dla wygody właścicieli i komfortu ich pupili.
+          Wspólnie tworzymy aplikację, która ma ułatwić opiekę nad zwierzętami, oferując intuicyjną platformę do
+          szybkiego rezerwowania usług weterynaryjnych, pielęgnacyjnych i opieki nad zwierzętami — wszystko
+          zaprojektowane dla wygody właścicieli i komfortu ich pupili.
           <div class="flex justify-end items-end gap-20 absolute right-[20px] bottom-[-110px]">
             <SlideInDown :delay="500">
               <div class="flex">
-                <div class="text-neutral-light" style="font-family: 'Segoe Script', sans-serif; font-size: 30px;">Nasz cel</div>
+                <div class="text-neutral-light" style="font-family: 'Segoe Script', sans-serif; font-size: 30px;">Nasz
+                  cel
+                </div>
               </div>
             </SlideInDown>
             <SlideInDown :delay="400">
@@ -181,24 +216,13 @@ const survey = [
       </div>
     </SlideInDown>
 
-    <div class="flex flex-col items-center justify-center pl-24 pr-24 mb-100">
-      <iframe
-          width="800"
-          height="450"
-          src="https://www.youtube.com/embed/8nd5n5KVOUo"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-      </iframe>
-    </div>
-
-    <div class="flex justify-center">
+    <div class="flex justify-center" v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">
       <Corgi/>
     </div>
 
     <div class="flex flex-col items-center">
-      <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-50 mb-50">Dlaczego warto?</div>
+      <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-50 mb-50"
+           v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">Dlaczego warto?</div>
       <div class="grid gap-24 sm:gap-60 2xl:gap-140 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
         <LandingCard v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }"
                      :src="calendar"
@@ -236,9 +260,28 @@ const survey = [
                      title="Kontakt z lekarzem"
                      caption="W razie potrzeby po wizycie możesz zadać dodatkowe pytania lekarzowi"/>
       </div>
+    </div>
 
-      <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-100 mb-50">Chcemy poznać Twoje zdanie</div>
-      <div class="flex flex-col gap-24 lg:w-978 w-full lg:pl-0 lg:pr-0 pl-24 pr-24 mb-100">
+    <div class="flex flex-col items-center bg-surface-100 mt-100">
+      <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-50 mb-50"
+           v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">A można tak bardziej obrazkowo? :)</div>
+      <div class="flex flex-col items-center justify-center pl-24 pr-24 mb-100 w-[100%] ytplayer"
+           v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">
+        <iframe
+            src="https://www.youtube.com/embed/1Y0tJY-hirE"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center">
+      <div class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 pl-24 pr-24 mt-100 mb-50"
+           v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">Chcemy poznać Twoje zdanie</div>
+      <div class="flex flex-col gap-24 lg:w-978 w-full lg:pl-0 lg:pr-0 pl-24 pr-24 mb-100"
+           v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">
         <div ref="gridContainerRef" class="grid items-center grid-cols-7 mb-16 relative">
           <FadeIn v-for="index in footPrintsAmount" :key="index" :delay="index / footPrintsAmount * 50">
             <img
@@ -269,7 +312,8 @@ const survey = [
           </div>
         </div>
 
-        <Carousel :page="step" :value="survey" :numVisible="1" :numScroll="1" :show-navigators="false" :show-indicators="false">
+        <Carousel :page="step" :value="survey" :numVisible="1" :numScroll="1" :show-navigators="false"
+                  :show-indicators="false">
           <template #item="{ data }">
             <LandingSurveyQuestion :item="data" :step="step" @value-change="onAnswerChange"/>
           </template>
@@ -277,17 +321,84 @@ const survey = [
 
         <div v-if="step < 6" class="flex justify-between gap-16">
           <Button @click="onPrevious" :disabled="step < 1" class="h-40 w-200" variant="outlined">Wstecz</Button>
-          <Button @click="onNext" :disabled="surveyPrimaryButtonIsDisabled" class="h-40 w-200">{{ surveyPrimaryButtonLabel }}</Button>
+          <Button @click="onNext" :disabled="surveyPrimaryButtonIsDisabled" class="h-40 w-200">
+            {{ surveyPrimaryButtonLabel }}
+          </Button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-center mt-50 mb-100" v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">
+      <div class="cta-final reveal surface max-w-[1200px] min-h-[295px] w-full flex flex-row items-center justify-center">
+        <div v-if="sentEmail" class="lg:text-5xl text-4xl font-medium text-center">
+          Dziękujemy
+        </div>
+        <div v-else style="display:grid; gap:10px; align-items:center">
+          <h2 class="lg:text-5xl text-4xl font-medium lg:pl-0 lg:pr-0 mb-15">Może chciałbyś sprawdzić jak to działa?</h2>
+          <p class="mb-15" style="color:#E2F7F3; margin:0 0 8px; max-width: 70%">Bylibyśmy zaszczyceni, gdybyś miał ochotę wziąć udział w przyszłych testach naszego rozwiązania. Aby wziąc
+            udział w zamkniętej becie naszej aplikacji zostaw swojego maila. <br/>Obiecujemy nie wysyłać spamu - dostaniesz
+            od nas jedynie zaproszenie do testów, gdy aplikacja będzie gotowa.</p>
+
+          <div class="flex flex-row gap-16">
+            <InputText v-model="email" type="email" placeholder="email" class="w-[100%]"></InputText>
+            <Button @click="addEmail" class="h-40 w-200">Zapisz się</Button>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="flex flex-col items-center justify-center h-50 bg-primary-600 font-medium" style="color: #e8e8e8;">
-      <span>Copyright © 2025, Zoovi | Icons by <a href="https://www.flaticon.com" target="_blank" rel="noopener noreferrer">Flaticon</a>.</span>
+      <span>Copyright © 2025, Zoovi | Icons by <a href="https://www.flaticon.com" target="_blank"
+                                                  rel="noopener noreferrer">Flaticon</a>.</span>
     </div>
   </div>
 </template>
 
 <style scoped>
+.handwritten {
+  font-family: 'JustMeAgainDownHere';
+}
+
+.subtitle {
+  font-size: 8rem;
+  font-weight: 800;
+}
+
+.surface {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(19,163,139,.12);
+}
+
+.cta-final {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(120deg, #007a5c, #0E7F6B);
+  color: white;
+  border-radius:16px;
+  padding: clamp(28px, 4vw, 44px)
+}
+
+.cta-final::after {
+  content: "";
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  right: -120px;
+  top: -120px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .35), rgba(255, 255, 255, 0) 60%)
+}
+
+.ytplayer iframe{
+  width:100%;
+  max-width:1200px;
+  aspect-ratio:16/9;
+  height:auto;
+  border:0;
+  display:block;
+}
+
 
 </style>

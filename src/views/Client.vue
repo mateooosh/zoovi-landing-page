@@ -39,7 +39,7 @@ onMounted(async () => {
   window.addEventListener('resize', updateWidth)
   updateWidth()
 
-  const path = 'client/views-count'
+  const path = 'views-count/client'
 
   try {
     await update(databaseRef, {
@@ -102,9 +102,7 @@ const addEmail = async () => {
     sentEmail.value = true
     email.value = ''
 
-    logEvent(analytics, 'added_email', {
-      debug_mode: true
-    })
+    logEvent(analytics, 'email_client')
 
   } catch (error) {
     console.error('Error saving email:', error)
@@ -270,7 +268,7 @@ const survey = [
       <div class="flex flex-col items-center justify-center pl-24 pr-24 mb-100 w-[100%] ytplayer"
            v-animateonscroll="{ enterClass: 'animate-enter fade-in-10 zoom-in-75 animate-duration-500' }">
         <iframe
-            src="https://www.youtube.com/embed/8nd5n5KVOUo"
+            src="https://www.youtube.com/embed/qqSdwuxVfeE"
             title="YouTube video player"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
